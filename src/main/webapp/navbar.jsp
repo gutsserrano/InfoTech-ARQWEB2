@@ -12,7 +12,12 @@
 				<li class="nav-item">
 					<a class="nav-link fw-bold" href="customer-register.jsp">Cadastrar cliente</a></li>
 				<li class="nav-item">
-					<a class="nav-link fw-bold" href="service-order-register.jsp">Nova Ordem de Serviço</a>
+					<form action="customerSearch" method="post">
+						<button type="submit" class="btn fw-bold">
+							<!-- <a class="nav-link fw-bold" href="service-order-register.jsp">Nova Ordem de Serviço</a> -->
+							Nova Ordem de Serviço
+						</button>
+					</form>
 				</li>
 			</ul>
 		</div>

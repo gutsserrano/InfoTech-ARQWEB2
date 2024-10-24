@@ -2,6 +2,7 @@ package br.edu.ifsp.arq.tsi.arqweb2.InfoTech.servlets;
 
 import java.io.IOException;
 
+import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model.Address;
 import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model.Customer;
 import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model.dao.CustomerDao;
 import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.utils.DataSourceSearcher;
@@ -36,11 +37,29 @@ public class CustomerRegisterServlet extends HttpServlet {
 		String phone = req.getParameter("phone");
 		String cpf = req.getParameter("cpf");
 		
+		String cep = req.getParameter("cep");
+		String street = req.getParameter("street");
+		String number = req.getParameter("number");
+		String neighborhood = req.getParameter("neighborhood");
+		String city = req.getParameter("city");
+		String state = req.getParameter("state");
+		String complement = req.getParameter("complement");
+		
+		Address address = new Address();
+		address.setZipCode(cep);
+		address.setStreet(street);
+		address.setNumber(number);
+		address.setNeighborhood(neighborhood);
+		address.setCity(city);
+		address.setState(state);
+		address.setComplement(complement);
+		
 		Customer customer = new Customer();
 		customer.setName(name);
 		customer.setEmail(email);
 		customer.setPhone(phone);
 		customer.setCpf(cpf);
+		customer.setAddress(address);
 		
 		RequestDispatcher dispatcher = null;
 		
@@ -48,7 +67,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 		
 		if(customerDao.save(customer)) {
 			req.setAttribute("result", "registered");
-			dispatcher = req.getRequestDispatcher("/home.jsp");
+			dispatcher = req.getRequestDispatcher("/serviceOrderSearch");
 		}else {
 			req.setAttribute("result", "notRegistered");
 			dispatcher = req.getRequestDispatcher("customer-register.jsp");

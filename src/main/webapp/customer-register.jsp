@@ -60,6 +60,48 @@
 						maxlength="15" required="required"> <span
 						id="2"></span>
 				</div>
+				
+				<div class="mb-2">
+					<label for="name">CEP*</label> <input type="text"
+						name="cep" id="cep" class="form-control mb-3" minlength="8"
+						maxlength="9" required="required"> <span id="4"></span>
+				</div>
+				
+				<div class="mb-2">
+					<label for="name">Rua*</label> <input type="text"
+						name="street" id="street" class="form-control mb-3" minlength="3"
+						maxlength="50" required="required"> <span id="5"></span>
+				</div>
+				
+				<div class="mb-2">
+					<label for="name">Numero*</label> <input type="text"
+						name="number" id="number" class="form-control mb-3" minlength="1"
+						required="required"> <span id="9"></span>
+				</div>
+				
+				<div class="mb-2">
+					<label for="name">Bairro*</label> <input type="text"
+						name="neighborhood" id="neighborhood" class="form-control mb-3" minlength="1"
+						required="required"> <span id="6"></span>
+				</div>
+				
+				<div class="mb-2">
+					<label for="name">Cidade*</label> <input type="text"
+						name="city" id="city" class="form-control mb-3" minlength="1"
+						required="required"> <span id="7"></span>
+				</div>
+				
+				<div class="mb-2">
+					<label for="name">State*</label> <input type="text"
+						name="state" id="state" class="form-control mb-3" minlength="1"
+						required="required"> <span id="8"></span>
+				</div>
+				
+				<div class="mb-2">
+					<label for="name">Complemento</label> <input type="text"
+						name="street" id="street" class="form-control mb-3">
+						<span id="10"></span>
+				</div>
 
 				<div class="mb-2">
 					<button type="submit" class="btn btn-primary">Salvar</button>
@@ -73,6 +115,6 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
-	<script src="js/user-register.js"></script>
+	<script src="js/customer-register.js"></script>
 </body>
 </html>

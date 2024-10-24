@@ -1,48 +1,134 @@
 package br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ServiceOrder {
 
 	private int id;
-	private Customer customer;
 	private String description;
+	private Customer customer;
+	private LocalDate issueDate;
+	private LocalDate endDate;
+	private float price;
+	private Status status;
+	private PaymentMethod paymentMethod;
+	private String observation;
 	
 	public ServiceOrder() {
 		
 	}
+
 	
-	public ServiceOrder(int id, Customer customer, String description) {
-		super();
-		this.id = id;
-		this.customer = customer;
-		this.description = description;
-	}
 
 	public int getId() {
 		return id;
 	}
 
+
+
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Customer getCustomer() {
-		return customer;
-	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
 
 	public String getDescription() {
 		return description;
 	}
 
+
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+
+
+	public LocalDate getIssueDate() {
+		return issueDate;
+	}
+
+
+
+	public void setIssueDate(LocalDate issueDate) {
+		this.issueDate = issueDate;
+	}
+
+
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+
+
+	public float getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+
+
+	public Status getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+
+
+	public String getObservation() {
+		return observation;
+	}
+
+
+
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

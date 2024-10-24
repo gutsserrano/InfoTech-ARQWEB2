@@ -9,8 +9,6 @@ public class Customer {
 	private String email;
 	private String phone;
 	private String cpf;
-	private Status status;
-	private PaymentMethod paymentMethod;
 	private Address address;
 	
 	public Customer() {
@@ -75,32 +73,7 @@ public class Customer {
 		this.cpf = cpf;
 	}
 
-
-
-	public Status getStatus() {
-		return status;
-	}
-
-
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-
-
-	public PaymentMethod getPaymentMethod() {
-		return paymentMethod;
-	}
-
-
-
-	public void setPaymentMethod(PaymentMethod paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-
-
-
+	
 	public Address getAddress() {
 		return address;
 	}
