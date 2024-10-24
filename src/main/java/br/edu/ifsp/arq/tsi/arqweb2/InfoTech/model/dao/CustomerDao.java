@@ -22,7 +22,7 @@ public class CustomerDao {
 	}
 	
 	public Optional<Customer> getCustomerByCpf(String cpf){
-		String sql = "select id,name,email,phone,cpf from customer where cpf=?";
+		String sql = "select id,name,email,phone,cpf,password from customer where cpf=?";
 		Optional<Customer> optional = Optional.empty();
 		try(Connection conn = dataSource.getConnection(); 
 				PreparedStatement ps = conn.prepareStatement(sql)){
@@ -35,6 +35,32 @@ public class CustomerDao {
 					customer.setEmail(rs.getString(3));
 					customer.setPhone(rs.getString(4));
 					customer.setCpf(rs.getString(5));
+					customer.setPassword(rs.getString(6));
+					optional = Optional.of(customer);
+				}
+			}
+		}catch (SQLException e) {
+			throw new RuntimeException("Erro durante a consulta no BD", e);
+		}
+		return optional;
+	}
+	
+	public Optional<Customer> getUserByEmailAndPassword(String email, String password){
+		String sql = "select id,name,email,phone,cpf,password from customer where email=? and password=?";
+		Optional<Customer> optional = Optional.empty();
+		try(Connection conn = dataSource.getConnection(); 
+				PreparedStatement ps = conn.prepareStatement(sql)){
+			ps.setString(1, email);
+			ps.setString(2, password);
+			try(ResultSet rs = ps.executeQuery()) {
+				if(rs.next()) {
+					Customer customer = new Customer();
+					customer.setId(rs.getInt(1));
+					customer.setName(rs.getString(2));
+					customer.setEmail(rs.getString(3));
+					customer.setPhone(rs.getString(4));
+					customer.setCpf(rs.getString(5));
+					customer.setPassword(rs.getString(6));
 					optional = Optional.of(customer);
 				}
 			}
@@ -100,8 +126,8 @@ public class CustomerDao {
 		}
 		
 		saveAddress(customer.getAddress());
-		String sql = "insert into customer (name, email, phone, cpf, active, addressId) \n"
-				   + "values (?,?,?,?,?,LAST_INSERT_ID());";
+		String sql = "insert into customer (name, email, phone, cpf, active, addressId, password) \n"
+				   + "values (?,?,?,?,?,LAST_INSERT_ID(),?);";
 		try(Connection conn = dataSource.getConnection(); 
 				PreparedStatement ps = conn.prepareStatement(sql)){
 			
@@ -110,6 +136,7 @@ public class CustomerDao {
 			ps.setString(3, customer.getPhone());
 			ps.setString(4, customer.getCpf());
 			ps.setBoolean(5, true);
+			ps.setString(6, customer.getPassword());
 			ps.executeUpdate();
 		}catch (SQLException e) {
 			throw new RuntimeException("Erro durante a escrita no BD, Customer", e);

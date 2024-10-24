@@ -6,6 +6,7 @@ import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model.Address;
 import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model.Customer;
 import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.model.dao.CustomerDao;
 import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.utils.DataSourceSearcher;
+import br.edu.ifsp.arq.tsi.arqweb2.InfoTech.utils.PasswordEncoder;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,6 +35,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String name = req.getParameter("name");
 		String email = req.getParameter("email");
+		String password = PasswordEncoder.encode(req.getParameter("password"));
 		String phone = req.getParameter("phone");
 		String cpf = req.getParameter("cpf");
 		
@@ -57,6 +59,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 		Customer customer = new Customer();
 		customer.setName(name);
 		customer.setEmail(email);
+		customer.setPassword(password);
 		customer.setPhone(phone);
 		customer.setCpf(cpf);
 		customer.setAddress(address);
@@ -67,7 +70,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 		
 		if(customerDao.save(customer)) {
 			req.setAttribute("result", "registered");
-			dispatcher = req.getRequestDispatcher("/serviceOrderSearch");
+			dispatcher = req.getRequestDispatcher("login.jsp");
 		}else {
 			req.setAttribute("result", "notRegistered");
 			dispatcher = req.getRequestDispatcher("customer-register.jsp");

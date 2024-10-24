@@ -49,7 +49,7 @@ public class CustomerSearchServlet extends HttpServlet {
 		
 		req.setAttribute("customers", customersDto);
 
-		url = "/service-order-register.jsp";
+		url = "/paymentSearch";
 
 		RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 		dispatcher.forward(req, resp);

@@ -37,7 +37,7 @@ public class ServiceOrderSearchServlet extends HttpServlet {
 			
 		ServiceOrderDao serviceOrderDao = new ServiceOrderDao(DataSourceSearcher.getInstance().getDataSource());
 		List<ServiceOrderDto> serviceOrders = new ArrayList<>();
-		if(cpf.isEmpty()) {
+		if(cpf == null || cpf.isEmpty()) {
 			for (var item : serviceOrderDao.getAllServicesOrders()) {
 				serviceOrders.add(new ServiceOrderDto(item));
 			}
@@ -50,6 +50,10 @@ public class ServiceOrderSearchServlet extends HttpServlet {
 		req.setAttribute("serviceOrders", serviceOrders);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/home.jsp");
 		dispatcher.forward(req, resp);
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 }

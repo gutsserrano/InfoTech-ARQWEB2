@@ -66,6 +66,43 @@
 							class="form-control mb-3" required="required"></textarea>
 						<span id="1"></span>
 					</div>
+					
+					<div class="mb-2">
+						<label for="issueDate">Data de Emissão*</label> 
+						<input type="date" name="issueDate" id="issueDate"
+							class="form-control" required="required">
+					</div>
+					
+					<div class="mb-2">
+						<label for="endDate">Data de Finalização*</label> 
+						<input type="date" name="endDate" id="endDate"
+							class="form-control" required="required">
+					</div>
+					
+					<div class="mb-2">
+						<label for="price">Preço*</label> 
+						<input type="number" min="1" step="any" name="price" id="price"
+							class="form-control" required="required">
+					</div>
+					
+					<C:when test="${fn:length(paymentMethods) > 0}">
+						<div class="mb-2">
+							<label for="methodSelect">Selecionar Método de pagamento</label> 
+							<select class="form-select" name="methodSelect" id="methodSelect" required="required">
+								<c:forEach var="method" items="${paymentMethods}" varStatus="index">
+									<option>${method.id} - ${method.name}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</C:when>
+					
+					<input type="hidden" id="paymentMethod" name="paymentMethod" />
+					
+					<div class="mb-2">
+						<label for="observation">Observação*</label>
+						<textarea name="observation" id="observation"
+							class="form-control mb-3"></textarea>
+					</div>
 
 					<div class="mb-2">
 						<button type="submit" id="saveButton" class="btn btn-primary">Salvar</button>

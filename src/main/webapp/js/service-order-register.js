@@ -1,9 +1,15 @@
 const botao = document.getElementById("saveButton");
 
 botao.addEventListener("click", function() {
-    const string = document.getElementById("cpfHidden").value;
-	const cpf = string.substring(string.indexOf('-') + 1).trim();
+    const cpfHidden = document.getElementById("cpfHidden").value;
+	const cpf = cpfHidden.substring(cpfHidden.indexOf('-') + 1).trim();
 	
   	document.getElementById("cpf").value = cpf;
+  	
+  	const methodSelect = document.getElementById("methodSelect").value;
+	const methodId = methodSelect.substring(0, methodSelect.indexOf('-')).trim();
+	
+  	document.getElementById("paymentMethod").value = methodId;
+  	
   	document.getElementById("serviceOrderForm").submit();
 });
