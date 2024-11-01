@@ -20,7 +20,7 @@
 <title>InfoTech - Página de Cadastro de Cliente</title>
 </head>
 <body class="bg-dark text-white">
-	<jsp:include page="loginNavbar.jsp" />
+	<jsp:include page="navbar.jsp" />
 	<div class="container">
 		<div class="col-lg-6 offset-lg-3 col-sm-12">
 			<c:if test="${result == 'notRegistered'}">
