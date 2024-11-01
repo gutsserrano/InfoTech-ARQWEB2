@@ -43,3 +43,5 @@ completeDescriptionModal.addEventListener('show.bs.modal', (event) => {
         <p>${text}</p>
     `;
 });
+
+

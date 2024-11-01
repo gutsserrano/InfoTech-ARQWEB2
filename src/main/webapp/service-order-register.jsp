@@ -43,17 +43,41 @@
 			</c:if>
 
 			<form action="serviceOrderRegister" method="post" id="serviceOrderForm">
+			
+				<c:choose>
+					<c:when test="${serviceOrder == null}">
+						<h1 class="text-center mt-3 mb-3">Cadastrar Ordem de serviço</h1>
+					</c:when>
+					<c:when test="${serviceOrder != null}">
+						<h1 class="text-center mt-3 mb-3">Editar Ordem de serviço</h1>
+					</c:when>
+				</c:choose>
+				
+				<c:choose>
+					<c:when test="${serviceOrder == null}">
+						<input type="hidden" name="id" value="0">
+					</c:when>
+					<c:when test="${serviceOrder != null}">
+						<input type="hidden" name="id" value="${serviceOrder.id}">
+					</c:when>
+				</c:choose>
+				
 				<C:choose>
-
-					<h1 class="text-center mt-3 mb-3">Cadastrar Ordem de serviço</h1>
-
 					<C:when test="${fn:length(customers) > 0}">
 						<div class="mb-2">
 							<label for="cpfHidden">Selecionar cliente</label> 
-							<select class="form-select" name="cpfHidden" id="cpfHidden" required="required">
-								<c:forEach var="customer" items="${customers}" varStatus="index">
-									<option>${customer.name} - ${customer.cpf}</option>
-								</c:forEach>
+							<select class="form-select" name="cpfHidden" id="cpfHidden" required="required">								
+								<c:choose>
+									<c:when test="${serviceOrder == null}">
+										<option value="" selected>Selecione</option>
+										<c:forEach var="customer" items="${customers}" varStatus="index">
+											<option>${customer.name} - ${customer.cpf}</option>
+										</c:forEach>
+									</c:when>
+									<c:when test="${serviceOrder != null}">
+										<option value="${serviceOrder.customer.cpf}" selected>${serviceOrder.customer.name} - ${serviceOrder.customer.cpf}</option>
+									</c:when>
+								</c:choose>
 							</select>
 						</div>
 					</C:when>
@@ -63,35 +87,31 @@
 					<div class="mb-2">
 						<label for="description">Descrição*</label>
 						<textarea name="description" id="description"
-							class="form-control mb-3" required="required"></textarea>
+							class="form-control mb-3" required="required">${serviceOrder.description }</textarea>
 						<span id="1"></span>
 					</div>
 					
 					<div class="mb-2">
-						<label for="issueDate">Data de Emissão*</label> 
-						<input type="date" name="issueDate" id="issueDate"
-							class="form-control" required="required">
-					</div>
-					
-					<div class="mb-2">
-						<label for="endDate">Data de Finalização*</label> 
-						<input type="date" name="endDate" id="endDate"
-							class="form-control" required="required">
-					</div>
-					
-					<div class="mb-2">
 						<label for="price">Preço*</label> 
-						<input type="number" min="1" step="any" name="price" id="price"
-							class="form-control" required="required">
+						<input type="number" step="0.01" name="price" id="price"
+							class="form-control" required="required"
+							value="">
 					</div>
 					
 					<C:when test="${fn:length(paymentMethods) > 0}">
 						<div class="mb-2">
 							<label for="methodSelect">Selecionar Método de pagamento</label> 
 							<select class="form-select" name="methodSelect" id="methodSelect" required="required">
-								<c:forEach var="method" items="${paymentMethods}" varStatus="index">
-									<option>${method.id} - ${method.name}</option>
-								</c:forEach>
+								<c:choose>
+									<c:when test="${serviceOrder == null}">
+										<c:forEach var="method" items="${paymentMethods}" varStatus="index">
+											<option>${method.id} - ${method.name}</option>
+										</c:forEach>
+									</c:when>
+									<c:when test="${serviceOrder != null}">
+										<option selected>${serviceOrder.paymentMethod.id} - ${serviceOrder.paymentMethod.name}</option>
+									</c:when>
+								</c:choose>
 							</select>
 						</div>
 					</C:when>
@@ -101,7 +121,7 @@
 					<div class="mb-2">
 						<label for="observation">Observação*</label>
 						<textarea name="observation" id="observation"
-							class="form-control mb-3"></textarea>
+							class="form-control mb-3">${serviceOrder.observation }</textarea>
 					</div>
 
 					<div class="mb-2">

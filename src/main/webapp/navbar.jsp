@@ -10,7 +10,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
-					<a class="btn fw-bold" href="customer-register.jsp">Cadastrar cliente</a></li>
+					<a class="btn fw-bold" href="customer-register.jsp">Cadastrar Cliente</a></li>
 				<li class="nav-item">
 					<form action="customerSearch" method="post">
 						<button type="submit" class="btn fw-bold">
@@ -18,6 +18,9 @@
 						</button>
 					</form>
 				</li>
+				<li class="nav-item">
+					<a class="btn fw-bold" href="payment-method-register.jsp">Cadastrar Método de Pagamento</a></li>
+				<li class="nav-item">
 			</ul>
 		</div>
 	</div>

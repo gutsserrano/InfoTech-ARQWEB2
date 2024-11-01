@@ -46,6 +46,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 		String city = req.getParameter("city");
 		String state = req.getParameter("state");
 		String complement = req.getParameter("complement");
+		String role = req.getParameter("role");
 		
 		Address address = new Address();
 		address.setZipCode(cep);
@@ -63,6 +64,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 		customer.setPhone(phone);
 		customer.setCpf(cpf);
 		customer.setAddress(address);
+		customer.setRole(role);
 		
 		RequestDispatcher dispatcher = null;
 		
@@ -70,7 +72,7 @@ public class CustomerRegisterServlet extends HttpServlet {
 		
 		if(customerDao.save(customer)) {
 			req.setAttribute("result", "registered");
-			dispatcher = req.getRequestDispatcher("login.jsp");
+			dispatcher = req.getRequestDispatcher("/serviceOrderSearch");
 		}else {
 			req.setAttribute("result", "notRegistered");
 			dispatcher = req.getRequestDispatcher("customer-register.jsp");

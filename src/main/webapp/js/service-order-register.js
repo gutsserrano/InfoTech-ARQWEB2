@@ -11,5 +11,34 @@ botao.addEventListener("click", function() {
 	
   	document.getElementById("paymentMethod").value = methodId;
   	
-  	document.getElementById("serviceOrderForm").submit();
+  	verifyPrice();
+  	
+  	if(verifyDates()){
+	  	document.getElementById("serviceOrderForm").submit();  
+ 	}else{
+		 const issueDate = Date.parse(document.getElementById("issueDate").value);
+		 
+		 issueDate.setCustomValidity('a data de emissão deve vir antes');
+	 }
 });
+
+function verifyPrice(){
+	let price = document.getElementById("price").value;
+	
+	price = price.replace(/[a-zA-Z\s]/, "0");
+  	
+  	if(price < 0){
+	  document.getElementById("price").value = "0";
+	}
+}
+
+function verifyDates(){
+	const issueDate = Date.parse(document.getElementById("issueDate").value);
+	const endDate = Date.parse(document.getElementById("endDate").value);
+	
+	if(issueDate < endDate){
+		return true;
+	}else{
+		return false;
+	}
+}

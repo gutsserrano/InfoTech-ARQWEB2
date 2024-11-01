@@ -11,6 +11,7 @@ public class Customer {
 	private String phone;
 	private String cpf;
 	private Address address;
+	private String role;
 	
 	public Customer() {
 		
@@ -89,7 +90,13 @@ public class Customer {
 		this.address = address;
 	}
 
+	public String getRole() {
+		return role;
+	}
 
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	@Override
 	public int hashCode() {

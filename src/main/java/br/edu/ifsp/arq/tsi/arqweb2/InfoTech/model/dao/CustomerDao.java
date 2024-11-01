@@ -22,7 +22,7 @@ public class CustomerDao {
 	}
 	
 	public Optional<Customer> getCustomerByCpf(String cpf){
-		String sql = "select id,name,email,phone,cpf,password from customer where cpf=?";
+		String sql = "select id,name,email,phone,cpf,password,role from customer where cpf=?";
 		Optional<Customer> optional = Optional.empty();
 		try(Connection conn = dataSource.getConnection(); 
 				PreparedStatement ps = conn.prepareStatement(sql)){
@@ -36,6 +36,7 @@ public class CustomerDao {
 					customer.setPhone(rs.getString(4));
 					customer.setCpf(rs.getString(5));
 					customer.setPassword(rs.getString(6));
+					customer.setRole(rs.getString(7));
 					optional = Optional.of(customer);
 				}
 			}
@@ -84,7 +85,8 @@ public class CustomerDao {
 					     "a.neighborhood, " +
 					     "a.zipCode, " +
 					     "a.city, " +
-					     "a.state " +
+					     "a.state, " +
+					     "c.role " +
 					"FROM customer c " +
 					"JOIN address a ON a.id=c.addressId;";
 		List<Customer> customers = new ArrayList<Customer>();
@@ -109,6 +111,7 @@ public class CustomerDao {
 					customer.setPhone(rs.getString(4));
 					customer.setCpf(rs.getString(5));
 					customer.setAddress(address);
+					customer.setRole(rs.getString(14));
 					
 					customers.add(customer);
 				}
@@ -126,8 +129,8 @@ public class CustomerDao {
 		}
 		
 		saveAddress(customer.getAddress());
-		String sql = "insert into customer (name, email, phone, cpf, active, addressId, password) \n"
-				   + "values (?,?,?,?,?,LAST_INSERT_ID(),?);";
+		String sql = "insert into customer (name, email, phone, cpf, active, addressId, password, role) \n"
+				   + "values (?,?,?,?,?,LAST_INSERT_ID(),?,?);";
 		try(Connection conn = dataSource.getConnection(); 
 				PreparedStatement ps = conn.prepareStatement(sql)){
 			
@@ -137,6 +140,7 @@ public class CustomerDao {
 			ps.setString(4, customer.getCpf());
 			ps.setBoolean(5, true);
 			ps.setString(6, customer.getPassword());
+			ps.setString(7, customer.getRole());
 			ps.executeUpdate();
 		}catch (SQLException e) {
 			throw new RuntimeException("Erro durante a escrita no BD, Customer", e);

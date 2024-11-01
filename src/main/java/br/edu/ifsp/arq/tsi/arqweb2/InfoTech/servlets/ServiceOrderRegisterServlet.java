@@ -40,13 +40,13 @@ public class ServiceOrderRegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int id = Integer.parseInt(req.getParameter("id"));
 		String cpf = req.getParameter("cpf");
 		String desc = req.getParameter("description");
-		LocalDate issueDate = LocalDate.parse(req.getParameter("issueDate"));
-		LocalDate endDate = LocalDate.parse(req.getParameter("endDate"));
 		float price = Float.parseFloat(req.getParameter("price"));
 		int paymentId = Integer.parseInt(req.getParameter("paymentMethod"));
 		String observation = req.getParameter("observation");
+		LocalDate issueDate = LocalDate.now();
 		
 		
 		DataSource datasource = DataSourceSearcher.getInstance().getDataSource();
@@ -70,20 +70,29 @@ public class ServiceOrderRegisterServlet extends HttpServlet {
 				serviceOrder.setCustomer(customer.get());
 				serviceOrder.setDescription(desc);
 				serviceOrder.setIssueDate(issueDate);
-				serviceOrder.setEndDate(endDate);
 				serviceOrder.setPrice(price);
 				serviceOrder.setPaymentMethod(paymentMethod.get());
-				serviceOrder.setStatus(Status.APPROVED);
+				serviceOrder.setStatus(Status.IN_APPROVAL);
 				serviceOrder.setObservation(observation);
 				
 				ServiceOrderDao serviceOrderDao = new ServiceOrderDao(datasource);
 				
-				if(serviceOrderDao.save(serviceOrder)) {
-					req.setAttribute("result", "registered");
-					dispatcher = req.getRequestDispatcher("/home.jsp");
+				if(id == 0) {
+					if(serviceOrderDao.save(serviceOrder)) {
+						req.setAttribute("result", "registered");
+						dispatcher = req.getRequestDispatcher("/serviceOrderSearch");
+					}else {
+						req.setAttribute("result", "notRegistered");
+						dispatcher = req.getRequestDispatcher("service-order-register.jsp");
+					}
 				}else {
-					req.setAttribute("result", "notRegistered");
-					dispatcher = req.getRequestDispatcher("service-order-register.jsp");
+					serviceOrder.setId(id);
+					if(serviceOrderDao.update(serviceOrder)) {
+						dispatcher = req.getRequestDispatcher("/serviceOrderSearch");
+					}else {
+						req.setAttribute("result", "notRegistered");
+						dispatcher = req.getRequestDispatcher("service-order-register.jsp");
+					}
 				}
 			}
 		}
@@ -91,4 +100,39 @@ public class ServiceOrderRegisterServlet extends HttpServlet {
 		dispatcher.forward(req, resp);
 	}
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String action = req.getParameter("action");
+		int id = Integer.parseInt(req.getParameter("service-order-id"));
+		String status = req.getParameter("newStatus");
+		String url = null;
+
+		ServiceOrderDao serviceOrderDao = new ServiceOrderDao(DataSourceSearcher.getInstance().getDataSource());
+		Optional<ServiceOrder> optional = serviceOrderDao.getServiceOrderById(id);
+		
+		RequestDispatcher dispatcher = null;
+		
+		if(!optional.isEmpty()) {
+			if(action.equals("update")) {
+				req.setAttribute("serviceOrder", optional.get());
+				url = "/service-order-register.jsp";
+				dispatcher = req.getRequestDispatcher(url);
+				dispatcher.forward(req, resp);
+			}
+			if(action.equals("remove")) {
+				Boolean response = serviceOrderDao.delete(id);
+				resp.setContentType("application/json");
+				resp.getWriter().write(response.toString());
+			}
+			if(action.equals("finish")){
+				Boolean response = serviceOrderDao.updateStatus(id, Status.valueOf(status));
+				resp.setContentType("application/json");
+				resp.getWriter().write(response.toString());
+			}
+		}
+		
+		url = "/serviceOrderSearch";
+		dispatcher = req.getRequestDispatcher(url);
+		dispatcher.forward(req, resp);
+	}
 }

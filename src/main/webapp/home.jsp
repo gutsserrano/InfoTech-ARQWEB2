@@ -49,7 +49,7 @@
 								<th scope="col" class="p-3">Preço</th>
 								<th scope="col" class="p-3">Data de Emissão</th>
 								<th scope="col" class="p-3">Data de Finalização</th>
-								<th scope="col" class="p-3">Mais informações</th>
+								<th scope="col" class="p-3">Outros</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -82,9 +82,35 @@
 								       data-bs-phone="${serviceOrder.phone}" 
 								       data-bs-email="${serviceOrder.email}">${serviceOrder.name}</a>
 									</td>
-									<td class="p-3">R$ ${serviceOrder.price}</td>
-									<td class="p-3">${serviceOrder.issueDate}</td>
-									<td class="p-3">${serviceOrder.endDate}</td>
+									<td class="p-3">
+									<fmt:formatNumber value="${serviceOrder.price}"
+										var="formattedPrice" type="text"
+										pattern=".00"/>
+										R$ ${formattedPrice}
+									</td>
+									<td class="p-3">
+									<fmt:parseDate value="${serviceOrder.issueDate}" 
+												pattern="yyyy-MM-dd" var="parsedIssueDate"
+												type="date" />
+											<fmt:formatDate value="${parsedIssueDate}" 
+												var="formattedIssueDate" type="date"
+												pattern="dd/MM/yyyy"/>
+											${formattedIssueDate}
+									</td>
+									<td class="p-3">
+										<c:if test="${not empty serviceOrder.endDate}">
+											<fmt:parseDate value="${serviceOrder.endDate}" 
+												pattern="yyyy-MM-dd" var="parsedDate"
+												type="date" />
+											<fmt:formatDate value="${parsedDate}" 
+												var="formattedDate" type="date"
+												pattern="dd/MM/yyyy"/>
+											${formattedDate}
+										</c:if>
+										<c:if test="${empty serviceOrder.endDate}">
+											Não Finalizado
+										</c:if>
+									</td>
 									<td class="p-3"><span data-bs-toggle="tooltip"
 										data-bs-placement="top" title="Infos"> <a type="button"
 										class="btn" data-bs-toggle="modal" data-bs-target="#serviceOrderInfoModal"
@@ -92,8 +118,53 @@
 										data-bs-observation="${serviceOrder.observation}"
 										data-bs-paymentMethodName="${serviceOrder.paymentMethodName}"> 
 								       <img src="img/info.svg" alt="Info">
-										</a>
-									</span></td>
+										</a></span>
+										
+										<c:choose>
+											<c:when test="${serviceOrder.status == 'IN_APPROVAL' }">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="Aprovar">
+													<a class="btn" href="serviceOrderRegister?action=finish&service-order-id=${serviceOrder.id}&newStatus=APPROVED">
+				                						<img src="img/IN_APPROVAL.svg" alt="Em aprovação">
+				                					</a>
+												</span>
+											</c:when>
+											<c:when test="${serviceOrder.status == 'APPROVED' }">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="Iniciar progresso">
+													<a class="btn" href="serviceOrderRegister?action=finish&service-order-id=${serviceOrder.id}&newStatus=IN_PROGRESS">
+				                						<img src="img/APPROVED.svg" alt="Aprovado">
+				                					</a>
+												</span>
+											</c:when>
+											<c:when test="${serviceOrder.status == 'IN_PROGRESS' }">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="Finalizar">
+													<a class="btn" href="serviceOrderRegister?action=finish&service-order-id=${serviceOrder.id}&newStatus=FINISHED">
+				                						<img src="img/IN_PROGRESS.svg" alt="Em progresso">
+				                					</a>
+												</span>
+											</c:when>
+											<c:when test="${serviceOrder.status == 'FINISHED' }">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="Finalizado">
+													<a class="btn" href="">
+				                						<img src="img/FINISHED.svg" alt="Finalizado">
+				                					</a>
+												</span>
+											</c:when>
+										</c:choose>
+										
+										
+										
+										<span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+											<a class="btn" href="serviceOrderRegister?action=update&service-order-id=${serviceOrder.id}">
+		                						<img src="img/edit.svg" alt="Editar">
+		                					</a>
+										</span>
+										
+										<span data-bs-toggle="tooltip" data-bs-placement="top" title="excluir">
+											<a class="btn" href="serviceOrderRegister?action=remove&service-order-id=${serviceOrder.id}">
+		                						<img src="img/delete.svg" alt="Excluir">
+		                					</a>
+										</span>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -105,24 +176,22 @@
 			</c:choose>
 		</div>
 	</div>
-	<div class="modal" tabindex="-1" id="myModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Exclusão</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<p>Tem certeza que deseja excluir a atividade?</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" id="delete" class="btn btn-danger">Excluir</button>
-				</div>
-			</div>
-		</div>
+	<div class="modal" tabindex="-1" id="deleteServiceOrderModal">
+	    <div class="modal-dialog">
+	        <div class="modal-content bg-dark">
+	            <div class="modal-header">
+	                <h5 class="modal-title">Exclusão</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>
+	            <div class="modal-body">
+	                <p>Tem certeza que deseja excluir a atividade?</p>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+	                <button id="confirmDeleteButton" class="btn btn-danger">Excluir</button>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 
 	<div class="modal" id="customerInfoModal">
