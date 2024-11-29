@@ -46,6 +46,31 @@ public class CustomerDao {
 		return optional;
 	}
 	
+	public Optional<Customer> getCustomerByEmail(String email){
+		String sql = "select id,name,email,phone,cpf,password,role from customer where email=?";
+		Optional<Customer> optional = Optional.empty();
+		try(Connection conn = dataSource.getConnection(); 
+				PreparedStatement ps = conn.prepareStatement(sql)){
+			ps.setString(1, email);
+			try(ResultSet rs = ps.executeQuery()) {
+				if(rs.next()) {
+					Customer customer = new Customer();
+					customer.setId(rs.getInt(1));
+					customer.setName(rs.getString(2));
+					customer.setEmail(rs.getString(3));
+					customer.setPhone(rs.getString(4));
+					customer.setCpf(rs.getString(5));
+					customer.setPassword(rs.getString(6));
+					customer.setRole(rs.getString(7));
+					optional = Optional.of(customer);
+				}
+			}
+		}catch (SQLException e) {
+			throw new RuntimeException("Erro durante a consulta no BD", e);
+		}
+		return optional;
+	}
+	
 	public Optional<Customer> getUserByEmailAndPassword(String email, String password){
 		String sql = "select id,name,email,phone,cpf,password from customer where email=? and password=?";
 		Optional<Customer> optional = Optional.empty();
@@ -131,6 +156,7 @@ public class CustomerDao {
 		saveAddress(customer.getAddress());
 		String sql = "insert into customer (name, email, phone, cpf, active, addressId, password, role) \n"
 				   + "values (?,?,?,?,?,LAST_INSERT_ID(),?,?);";
+		
 		try(Connection conn = dataSource.getConnection(); 
 				PreparedStatement ps = conn.prepareStatement(sql)){
 			

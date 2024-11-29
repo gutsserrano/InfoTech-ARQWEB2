@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class ServiceOrderSearchServlet
@@ -33,11 +34,13 @@ public class ServiceOrderSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession(false);
 		String cpf = req.getParameter("cpf");
 			
 		ServiceOrderDao serviceOrderDao = new ServiceOrderDao(DataSourceSearcher.getInstance().getDataSource());
 		List<ServiceOrderDto> serviceOrders = new ArrayList<>();
-		if(cpf == null || cpf.isEmpty()) {
+		
+		if(cpf == null || cpf.isEmpty()) {				
 			for (var item : serviceOrderDao.getAllServicesOrders()) {
 				serviceOrders.add(new ServiceOrderDto(item));
 			}

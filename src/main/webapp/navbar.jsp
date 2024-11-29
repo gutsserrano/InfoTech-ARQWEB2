@@ -9,19 +9,31 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="btn fw-bold" href="customer-register.jsp">Cadastrar Cliente</a></li>
-				<li class="nav-item">
-					<form action="customerSearch" method="post">
-						<button type="submit" class="btn fw-bold">
-							Nova Ordem de Serviço
-						</button>
-					</form>
-				</li>
-				<li class="nav-item">
-					<a class="btn fw-bold" href="payment-method-register.jsp">Cadastrar Método de Pagamento</a></li>
-				<li class="nav-item">
+				<li class="nav-item dropdown">
+		          <a class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		            Ordens de Serviço
+		          </a>
+		          <ul class="dropdown-menu bg-dark">
+		            <li>
+		            	<form action="customerSearch" method="post">
+							<button type="submit" class="btn dropdown-item">
+								<span class="text-primary">Nova Ordem de Serviço</span>
+							</button>
+						</form>
+					</li>
+		            <li><a class="btn dropdown-item" href="payment-method-register.jsp">
+		            		<span class="text-primary">Cadastrar Método de Pagamento</span>
+		            	</a>
+	            	</li>
+		          </ul>	
+		        </li>
+		       
 			</ul>
+			<span class="navbar-text">
+		        <a class="btn" href="logout">
+        			<img src="img/logout.svg" style="width: 30px; height: 30px;" alt="Sair">
+    			</a>
+	      	</span>
 		</div>
 	</div>
 </nav>

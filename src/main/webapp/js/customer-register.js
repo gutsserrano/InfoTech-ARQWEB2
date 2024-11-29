@@ -56,7 +56,14 @@ function validatePassword(form){
 checkbox = document.getElementById('roleCheckbox')
 checkbox.addEventListener("change", () => {
     const checkbox = document.getElementById('roleCheckbox');
-    const role = checkbox.checked ? 'ADMIN' : 'USER';
+    
+    let role;
+    if(checkbox.checked){
+		role = "ADMIN";
+	}else{
+		role = "USER";
+	}
+    //const role = checkbox.checked ? 'ADMIN' : 'USER';
     
     document.getElementById('role').value = role;
   });

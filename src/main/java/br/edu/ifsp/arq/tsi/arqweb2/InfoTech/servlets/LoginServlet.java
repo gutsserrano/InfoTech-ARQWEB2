@@ -30,18 +30,7 @@ public class LoginServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		resp.getWriter().append("Served at: ").append(req.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String email = req.getParameter("email");
 		String password = PasswordEncoder.encode(req.getParameter("password"));
 		
@@ -62,6 +51,10 @@ public class LoginServlet extends HttpServlet {
 		}
 		RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 		dispatcher.forward(req, resp);
+	}
+    
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
 	}
 
 }
